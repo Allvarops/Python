@@ -1,0 +1,73 @@
+# SUDOKU
+   
+def make_Board(brd):
+    pbrd = []
+    cbrd = []
+    for l in brd:
+        for j in l:
+            if j =='0':
+                pbrd.append([])
+            else:
+                pbrd.append(int(j))
+            
+        cbrd.append(pbrd)
+        pbrd = []
+    return cbrd
+
+def coluns(brd):
+    coluna = []
+    col = ''
+    for j in range(9):
+        for i in brd:
+            col = col + i[j]
+        coluna.append(col)
+        col = ''
+    return coluna
+
+def matrx(brd):
+    mtx = []
+    m1,m2,m3 = '','',''
+    x = 0
+    for i in brd:
+        m1 = m1 + i[0:3]
+        m2 = m2 + i[3:6]
+        m3 = m3 + i[6:9]
+        x += 1
+        if x == 3:
+            mtx.append(m1)
+            mtx.append(m2)
+            mtx.append(m3)
+            x = 0
+            m1,m2,m3 = '','',''
+    return mtx
+
+lines = ['700040908','000012600','906807040','207030096','060508030','150060402','090206804','008390000','602080009']
+lin = ''
+
+'''
+for i in range(9):
+    while len(lin) < 9:
+        lin = input()
+        if len(lin) != 9:
+            print('Tamanho errado')
+    lines.append(lin)
+    lin = ''
+'''
+
+board = lines #linhas iniciais do Sudoku
+lines = make_Board(board) #Transforma lines em uma matrix
+cols = coluns(board) # pega as colunas do Sudoku
+cols = make_Board(cols)
+matrix = matrx(board) # pega as matrixes dentro do Sudoku
+matrix = make_Board(matrix)
+
+no_end = True # flag de veriicação de Sudoku completo
+a = ''
+for i in lines:
+   print(i)
+   a = input()
+    
+   
+
+
+
