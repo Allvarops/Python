@@ -1,0 +1,105 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+Este é um arquivo de script temporári
+# -*- coding: utf-8 -*-
+"""
+#Created on Mon Jul 16 18:12:23 2018
+#1234@author: aps1237
+import random
+game_on = True
+
+def print_big(letter):
+    patterns = {1:'  *  ',2:' * * ',3:'*   *',4:'*****',5:'**** ',6:'   * ',7:' *   ',8:'*   * ',9:'*    ',10:' ****',}
+    alphabet = {'A':[1,2,4,3,3],'B':[5,3,5,3,5],'C':[10,9,9,9,10],'D':[5,3,3,3,5],'E':[4,9,4,9,4]}
+    for pattern in alphabet[letter.upper()]:
+        print(patterns[pattern])
+
+def tela():
+    print(' **** ***** *   * *   *  *** ')
+    print('*     *     **  * *   * *   *')
+    print('****  ****  * * * ***** *****')
+    print('    * *     *  ** *   * *   *')
+    print('****  ***** *   * *   * *   *')
+
+def cls():
+    #limpa tela
+    print('\n'*50)
+
+def inicial():
+    # zera as variaveis
+    global rg, board, senha, game, tentativas
+    rg = [str(i) for i in range(1,7)]
+    board = [' ']* 4
+    senha = ''
+    game = True
+    board = ger_sen(board)
+    tentativas = []
+    cls()
+    tela()
+    
+    
+def ger_sen(board):
+    # gera senha do jogo composta com 4 digitos de 1 a 6
+    rnd = ' '
+    for i in range(4):
+        #rnd = str(random.randint(1,6))
+        while rnd in board:
+            rnd = str(random.randint(1,6))
+        board[i] = rnd
+    print(board)
+    return board
+
+def ent_sen(senha):
+    while len(senha) != 4 or '7' in senha or '8' in senha or '9' in senha or '0' in senha: 
+        senha = input('Entre com a senha:')
+        for i in senha:
+            if senha.count(i) > 1:
+                senha = ''
+    return senha        
+
+def comp():
+    pp = ''
+    nn = ''
+    for i in range(4):
+        if senha[i] == board[i]:
+            pp = pp + 'P'
+        elif senha[i] in board:
+            nn = nn + 'N'
+    tab_res = pp+nn
+    return tab_res
+
+def jogardenovo(game):
+    game_on = True
+    if game == False:
+        resp = input('Quer jogar novamente? ')
+    if resp == 's':
+        game_on = False
+    return game_on
+
+while game_on:
+    inicial()
+    senha = ent_sen('')
+    while game:
+        tab_res = comp()
+        tentativas.append('[' + senha + ']' + '[' + tab_res + ']')
+        nt = 0
+        for i in tentativas:
+            print(str(nt) + '>'+i)
+            nt += 1
+        if tab_res == 'PPPP':
+            print('Congratulations!')
+            pse = input('')
+            game = False
+        else:
+            if nt > 6:
+                game = False
+                print('GAME OVER!')
+                game_on = jogardenovo(game)
+            senha = ent_sen('')
+            cls()
+    else:
+        cls()
+        game_on = jogardenovo(game)
+        
