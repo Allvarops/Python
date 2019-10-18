@@ -1,73 +1,101 @@
 # SUDOKU
-   
+
 def make_Board(brd):
-    pbrd = []
     cbrd = []
     for l in brd:
+        pbrd = []
         for j in l:
             if j =='0':
-                pbrd.append([])
+                temp = []
+                for x in range(1,10):
+                    if str(x) not in l:
+                        temp.append(x)
+                pbrd.append(temp)
             else:
-                pbrd.append(int(j))
-            
-        cbrd.append(pbrd)
-        pbrd = []
+                pbrd.append(int(j))            
+        cbrd.append(pbrd)        
     return cbrd
 
-def coluns(brd):
+def unico(line):
+    line_copy = line.copy()
+    lenline = len(line)
+    ln = []
+    num = 0
+    for li in range(lenline):
+        if type(line[li]) == type([]):
+            for nl in line[li]:
+                count = 0
+                for allines in line:
+                    if type(allines) == type([]):
+                        if nl in allines:
+                            count += 1
+                if count == 1:
+                    line_copy[li] = nl                     
+    return line_copy
+  
+def verify_Line(line):
+    list = type([])
+    col = []
+    for i in line:
+        if type(i) == list:
+            j = i.copy()
+            for x in range(len(i)):
+                if i[x] in line:
+                    d = j.index(i[x])
+                    j.pop(d)
+            if len(j) == 1:
+                i = j.pop(0)
+            else:
+                i = j
+        col.append(i)
+    col = unico(col)
+    return col
+
+def turn_LC(lines):
+    list = type([])
     coluna = []
-    col = ''
+    col = []
     for j in range(9):
-        for i in brd:
-            col = col + i[j]
+        for i in lines:
+            col.append(i[j])
+        col = verify_Line(col)
         coluna.append(col)
-        col = ''
+        col = []
     return coluna
 
-def matrx(brd):
+def turn_Matx(lines):
     mtx = []
-    m1,m2,m3 = '','',''
+    mtxt = []
+    m1,m2,m3 = (),(),()
     x = 0
-    for i in brd:
-        m1 = m1 + i[0:3]
-        m2 = m2 + i[3:6]
-        m3 = m3 + i[6:9]
+    for i in lines:
+        m1 = m1 + tuple(i[0:3])
+        m2 = m2 + tuple(i[3:6])
+        m3 = m3 + tuple(i[6:9])
         x += 1
         if x == 3:
-            mtx.append(m1)
-            mtx.append(m2)
-            mtx.append(m3)
+            mtx.append(list(m1))
+            mtx.append(list(m2))
+            mtx.append(list(m3))
             x = 0
-            m1,m2,m3 = '','',''
+            m1,m2,m3 = (),(),()
+    for i in mtx:
+        mtxt.append(verify_Line(i))
     return mtx
 
-lines = ['700040908','000012600','906807040','207030096','060508030','150060402','090206804','008390000','602080009']
+def press(sodu):
+    list = type([])
+    for i in sodu:
+        print(i)
+    print('----------------------------')
+
+lines = ['070002048','500078060','083604210','715000020','020701080','030000401','068209754','090580006','350400092']
 lin = ''
-
-'''
-for i in range(9):
-    while len(lin) < 9:
-        lin = input()
-        if len(lin) != 9:
-            print('Tamanho errado')
-    lines.append(lin)
-    lin = ''
-'''
-
 board = lines #linhas iniciais do Sudoku
 lines = make_Board(board) #Transforma lines em uma matrix
-cols = coluns(board) # pega as colunas do Sudoku
-cols = make_Board(cols)
-matrix = matrx(board) # pega as matrixes dentro do Sudoku
-matrix = make_Board(matrix)
 
-no_end = True # flag de veriicação de Sudoku completo
-a = ''
-for i in lines:
-   print(i)
-   a = input()
-    
-   
-
-
-
+for i in range(5):
+    press(lines)
+    cols = turn_LC(lines) # transforma matrix linha em matrix coluna
+    lines = turn_LC(cols) # transforma matrix coluna em matrix linha
+    matrix = turn_Matx(lines)
