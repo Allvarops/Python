@@ -1,5 +1,21 @@
 # SUDOKU
 
+def enter_Soduku():
+    lines = []
+    for i in range(9):
+        ent = ''
+        while len(ent) != 9:
+            print(str(i) + ':=>', end = '')
+            ent = input()
+            cent = ent
+            for x in cent:
+                if x not in ['0','1','2','3','4','5','6','7','8','9']:
+                    ent = ''     
+        lines.append(ent)
+    return(lines)
+
+    
+
 def make_Board(brd):
     cbrd = []
     for l in brd:
@@ -34,10 +50,9 @@ def unico(line):
     return line_copy
   
 def verify_Line(line):
-    list = type([])
     col = []
     for i in line:
-        if type(i) == list:
+        if type(i) == type([]):
             j = i.copy()
             for x in range(len(i)):
                 if i[x] in line:
@@ -48,11 +63,10 @@ def verify_Line(line):
             else:
                 i = j
         col.append(i)
-    col = unico(col)
+        #col = unico(col)
     return col
 
 def turn_LC(lines):
-    list = type([])
     coluna = []
     col = []
     for j in range(9):
@@ -81,21 +95,37 @@ def turn_Matx(lines):
             m1,m2,m3 = (),(),()
     for i in mtx:
         mtxt.append(verify_Line(i))
-    return mtx
+    return mtxt
 
 def press(sodu):
-    list = type([])
     for i in sodu:
-        print(i)
-    print('----------------------------')
+        print('[', end='')
+        for j in i:
+            if type(j) == type([]):
+                print('0', end = ' ')
+            else:
+                print(j, end = ' ')
+        print(']')
+                
+    print('--------------------')
 
-lines = ['070002048','500078060','083604210','715000020','020701080','030000401','068209754','090580006','350400092']
+lines = enter_Soduku()
+#lines = ['070002048','500078060','083604210','715000020','020701080','030000401','068209754','090580006','350400092']
 lin = ''
 board = lines #linhas iniciais do Sudoku
 lines = make_Board(board) #Transforma lines em uma matrix
+press(lines)
 
 for i in range(5):
-    press(lines)
     cols = turn_LC(lines) # transforma matrix linha em matrix coluna
+    print('Coluns')
+    press(cols)
     lines = turn_LC(cols) # transforma matrix coluna em matrix linha
-    matrix = turn_Matx(lines)
+    print('Lines')
+    press(lines)
+    matrix = turn_Matx(lines)    
+    print('Matrix')
+    press(matrix)
+    lines = turn_Matx(matrix)
+    print('Lines')
+    press(lines)
